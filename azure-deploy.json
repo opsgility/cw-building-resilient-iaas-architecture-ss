@@ -100,6 +100,7 @@
     },
     "imageReference": "[variables('osType')]",
     "diagnosticsStorageAccountName": "[concat('webssdiag', uniqueString(resourceGroup().id))]",
+    "diagnosticsStorageAccountType": "Standard_LRS",
     "diagnosticsStorageAccountResourceGroup": "[resourceGroup().name]",
     "accountid": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', variables('diagnosticsStorageAccountResourceGroup'), '/providers/', 'Microsoft.Storage/storageAccounts/', variables('diagnosticsStorageAccountName'))]",
     "wadlogs": "<WadCfg> <DiagnosticMonitorConfiguration overallQuotaInMB=\"4096\" xmlns=\"http://schemas.microsoft.com/ServiceHosting/2010/10/DiagnosticsConfiguration\"> <DiagnosticInfrastructureLogs scheduledTransferLogLevelFilter=\"Error\"/> <WindowsEventLog scheduledTransferPeriod=\"PT1M\" > <DataSource name=\"Application!*[System[(Level = 1 or Level = 2)]]\" /> <DataSource name=\"Security!*[System[(Level = 1 or Level = 2)]]\" /> <DataSource name=\"System!*[System[(Level = 1 or Level = 2)]]\" /></WindowsEventLog>",
@@ -114,7 +115,21 @@
     "wadProcessorMetricName3": "Percentage CPU"
   },
   "resources": [
-   {
+    {
+      "name": "[variables('diagnosticsStorageAccountName')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2017-06-01",
+      "sku": {
+        "name": "[variables('diagnosticsStorageAccountType')]"
+      },
+      "tags": {
+        "displayName": "diagstorage"
+      },
+      "dependsOn": [],
+      "kind": "Storage"
+    },
+    {
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIPAddressName')]",
       "location": "[variables('location')]",
@@ -202,14 +217,13 @@
             "name": "lbprobe"
           }
         ]
-
       }
     },
     {
       "type": "Microsoft.Compute/virtualMachineScaleSets",
       "name": "[variables('namingInfix')]",
       "location": "[variables('location')]",
-      "apiVersion": "2016-03-30",
+      "apiVersion": "2016-04-30-preview",
       "tags": {
         "displayName": "VMScaleSet"
       },
@@ -289,31 +303,29 @@
                   }
                 }
               },
-                {
-                    "name": "CloudShopExtension",
+              {
+                "name": "CloudShopExtension",
+                "properties": {
+                  "publisher": "Microsoft.Powershell",
+                  "type": "DSC",
+                  "typeHandlerVersion": "2.72",
+                  "autoUpgradeMinorVersion": false,
+                  "settings": {
+                    "modulesUrl": "[concat(parameters('_artifactsLocation'), '/', 'dsc.zip')]",
+                    "configurationFunction": "[variables('CloudShopExtensionConfigurationFunction')]",
                     "properties": {
-                        "publisher": "Microsoft.Powershell",
-                        "type": "DSC",
-                        "typeHandlerVersion": "2.72",
-                        "autoUpgradeMinorVersion": false,
-                        "settings": {
-                            "modulesUrl": "[concat(parameters('_artifactsLocation'), '/', 'dsc.zip')]",
-                            "configurationFunction": "[variables('CloudShopExtensionConfigurationFunction')]",
-                          "properties": {
-                            "nodeName": "localhost",
-                            "webDeployPackage": "[parameters('CloudShopWebPackage')]"
-                          }
-                        },
-                        "protectedSettings": { }
+                      "nodeName": "localhost",
+                      "webDeployPackage": "[parameters('CloudShopWebPackage')]"
                     }
+                  },
+                  "protectedSettings": {}
                 }
+              }
             ]
           }
         }
       },
-        "resources": [
-            
-        ]
+      "resources": []
     },
     {
       "name": "autoscalewad",
