@@ -214,8 +214,7 @@
         "displayName": "VMScaleSet"
       },
       "dependsOn": [
-        "storageLoop",
-        "[concat('Microsoft.Network/loadBalancers/', variables('loadBalancerName'))]",
+        "[concat('Microsoft.Network/loadBalancers/', variables('loadBalancerName'))]"
       ],
       "sku": {
         "name": "[parameters('vmSize')]",
