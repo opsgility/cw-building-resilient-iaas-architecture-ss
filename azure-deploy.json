@@ -311,7 +311,7 @@
                   "typeHandlerVersion": "2.72",
                   "autoUpgradeMinorVersion": false,
                   "settings": {
-                    "modulesUrl": "[concat(parameters('_artifactsLocation'), '/', 'dsc.zip')]",
+                    "modulesUrl": "[concat(parameters('_artifactsLocation'), '/DSC/', 'dsc.zip')]",
                     "configurationFunction": "[variables('CloudShopExtensionConfigurationFunction')]",
                     "properties": {
                       "nodeName": "localhost",
