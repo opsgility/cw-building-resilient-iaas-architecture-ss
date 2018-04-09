@@ -42,7 +42,7 @@
     },
     "CloudShopWebPackage": {
       "type": "string",
-      "defaultValue": "https://cloudworkshop.blob.core.windows.net/building-resilient-iaas-architecture/CloudShop.zip"
+      "defaultValue": "https://cloudworkshop.blob.core.windows.net/building-resilient-iaas-architecture/CloudShop-ss.zip"
     },
     "ExistingVirtualNetworkName": {
       "type": "string",
