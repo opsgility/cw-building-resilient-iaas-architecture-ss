@@ -50,7 +50,7 @@
       "metadata": {
         "description": "Name of existing virtual network"
       },
-      "defaultValue": "LitwareVNET"
+      "defaultValue": "contosoVNET"
     },
     "ExistingVirtualNetworkResourceGroup": {
       "type": "string",
@@ -58,7 +58,7 @@
       "metadata": {
         "description": "Resource group for existing virtual network"
       },
-      "defaultValue": "LitwareRG"
+      "defaultValue": "contosoRG"
     },
     "WebSubnetName": {
       "type": "string",
