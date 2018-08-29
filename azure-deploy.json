@@ -50,7 +50,7 @@
       "metadata": {
         "description": "Name of existing virtual network"
       },
-      "defaultValue": "contosoVNET"
+      "defaultValue": "VNET1"
     },
     "ExistingVirtualNetworkResourceGroup": {
       "type": "string",
